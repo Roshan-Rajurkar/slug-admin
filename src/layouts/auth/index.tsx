@@ -1,24 +1,27 @@
-import { Suspense, useMemo } from "react";
+import { Suspense, lazy, useMemo } from "react";
 import { Outlet, useRoutes, RouteObject, Navigate } from "react-router-dom";
 import FullScreenLoader from "../../common/components/fullscreenloader";
-import AuthLogin from "../../components/auth/login";
-import AuthRegister from "../../components/auth/register";
-import AuthNaviagtion from "../../common/components/authnavbar";
 import { Box } from "@mui/material";
+
+const LazyAuthLogin = lazy(() => import("../../components/auth/login"));
+const LazyAuthRegister = lazy(() => import("../../components/auth/register"));
+const LazyAuthNavigation = lazy(
+  () => import("../../common/components/authnavbar"),
+);
 
 const Layout = () => {
   return (
     <Box sx={{ height: "100vh", display: "flex", flexDirection: "column" }}>
       <Box
         sx={{
-          p: 2,
+          px: 2,
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          boxShadow: "rgba(33, 35, 38, 0.2) 0px 10px 10px -10px",
+          boxShadow: "rgba(33, 35, 38, 0.3) 0px 10px 10px -10px",
         }}
       >
-        <AuthNaviagtion />
+        <LazyAuthNavigation />
       </Box>
       <Box sx={{ flex: 1, backgroundColor: "#F1F1F6" }}>
         <Outlet />
@@ -39,11 +42,11 @@ const AuthLayout = () => {
         },
         {
           path: "login",
-          element: <AuthLogin />,
+          element: <LazyAuthLogin />,
         },
         {
           path: "register",
-          element: <AuthRegister />,
+          element: <LazyAuthRegister />,
         },
         {
           path: "help",

@@ -1,19 +1,29 @@
 import { Box, Link } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import APP_LOGO from "../../../assets/slug-admin.png";
+import TranslateIcon from "@mui/icons-material/Translate";
 
-const AuthNaviagtion = () => {
+const AuthNavigation = () => {
   const { t } = useTranslation("authentication");
 
   return (
     <>
-      <Box sx={{ width: 50, height: 50 }}>
+      <Box
+        sx={{
+          width: 100,
+          height: 70,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <img
           style={{
             width: "100%",
-            objectFit: "cover",
-            borderRadius: 13,
+            height: "100%",
+            objectFit: "contain",
           }}
-          src="https://img.freepik.com/premium-vector/freelance-sticker-logo-icon-vector-man-with-desktop-blogger-with-laptop-icon-vector-isolated-background-eps-10_399089-1098.jpg"
+          src={APP_LOGO}
           alt="SLUG-ADMIN"
         />
       </Box>
@@ -24,6 +34,8 @@ const AuthNaviagtion = () => {
           gap: 2,
         }}
       >
+        <TranslateIcon />
+
         <Link href={`/auth/login`} underline="none">
           {t("login")}
         </Link>
@@ -40,4 +52,4 @@ const AuthNaviagtion = () => {
   );
 };
 
-export default AuthNaviagtion;
+export default AuthNavigation;

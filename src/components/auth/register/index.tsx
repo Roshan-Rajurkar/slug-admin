@@ -1,3 +1,4 @@
+import * as React from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -10,37 +11,71 @@ import Container from "@mui/material/Container";
 import { useTranslation } from "react-i18next";
 import { useCallback } from "react";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import * as yup from "yup";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { RegisterForm } from "../modal";
+import { useSignUp } from "../service";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
 
-function Copyright(props: any) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="">
-        SLUG ADMIN
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
+function AuthRegister() {
+  const { t } = useTranslation(["authentication", "translation"]);
+
+  const navigate = useNavigate();
+
+  const validationSchema = yup.object().shape({
+    username: yup
+      .string()
+      .required(t("required", { ns: "translation" }))
+      .min(6, t("min-length", { min: 6 }))
+      .matches(
+        /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{6,}$/,
+        t("username-validation"),
+      ),
+    email: yup
+      .string()
+      .email(t("invalid-email"))
+      .required(t("required", { ns: "translation" })),
+    password: yup
+      .string()
+      .required(t("required", { ns: "translation" }))
+      .min(6, t("min-length", { min: 6 })),
+  });
+
+  const { mutate: signUp } = useSignUp();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(validationSchema),
+  });
+
+  const handleSignUp = useCallback(
+    (data: RegisterForm) => {
+      if (data) {
+        signUp(data, {
+          onSuccess: () => {
+            toast.success(t("sign-up-successfully"));
+            navigate("/auth/login");
+          },
+          onError: () => {
+            toast.error(t("something-went-wrong", { ns: "translation" }));
+          },
+        });
+      }
+    },
+    [signUp, navigate, t],
   );
-}
-
-export default function AuthRegister() {
-  const { t } = useTranslation("authentication");
-
-  // registration logic here
-  const handleSubmit = useCallback(() => {}, []);
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <Box
         sx={{
-          marginTop: 8,
+          marginTop: 4,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -52,15 +87,21 @@ export default function AuthRegister() {
         <Typography component="h1" variant="h5">
           {t("sign-up")}
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box
+          component="form"
+          onSubmit={handleSubmit(handleSignUp)}
+          noValidate
+          sx={{ mt: 1 }}
+        >
           <TextField
             margin="normal"
             required
             fullWidth
             id="username"
-            label="Username"
-            name="username"
-            autoComplete="username"
+            label={t("username")}
+            {...register("username")}
+            error={!!errors.username}
+            helperText={errors.username && errors.username.message}
             autoFocus
           />
           <TextField
@@ -68,25 +109,27 @@ export default function AuthRegister() {
             required
             fullWidth
             id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
+            label={t("email")}
+            {...register("email")}
+            error={!!errors.email}
+            helperText={errors.email && errors.email.message}
           />
           <TextField
             margin="normal"
             required
             fullWidth
-            name="password"
-            label="Password"
-            type="password"
             id="password"
-            autoComplete="new-password"
+            label={t("password")}
+            type="password"
+            {...register("password")}
+            error={!!errors.password}
+            helperText={errors.password && errors.password.message}
           />
           <Button
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+            sx={{ mt: 2, mb: 2 }}
           >
             {t("sign-up")}
           </Button>
@@ -99,7 +142,21 @@ export default function AuthRegister() {
           </Grid>
         </Box>
       </Box>
-      <Copyright sx={{ mt: 8, mb: 4 }} />
+      <Typography
+        variant="body2"
+        color="text.secondary"
+        align="center"
+        sx={{ mt: 8, mb: 4 }}
+      >
+        {"Copyright © "}
+        <Link color="inherit" href="">
+          SLUG ADMIN
+        </Link>{" "}
+        {new Date().getFullYear()}
+        {"."}
+      </Typography>
     </Container>
   );
 }
+
+export default AuthRegister;

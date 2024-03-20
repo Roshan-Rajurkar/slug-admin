@@ -1,21 +1,22 @@
-import { Suspense, useMemo } from "react";
+import { Suspense, lazy, useMemo } from "react";
 import {
   Navigate,
   RouteObject,
   useLocation,
   useRoutes,
 } from "react-router-dom";
-import AuthLayout from "./layouts/auth";
-import AppLayout from "./layouts/private";
 import FullScreenLoader from "./common/components/fullscreenloader";
+
+const LazyAuthLayout = lazy(() => import("./layouts/auth"));
+const LazyAppLayout = lazy(() => import("./layouts/private"));
 
 const App = () => {
   const { search } = useLocation();
 
   const AuthRoutes: RouteObject = useMemo(
     () => ({
-      path: "auth/*",
-      element: <AuthLayout />,
+      path: "/auth/*",
+      element: <LazyAuthLayout />,
     }),
     [],
   );
@@ -23,7 +24,7 @@ const App = () => {
   const AppRoutes: RouteObject = useMemo(
     () => ({
       path: "/app/*",
-      element: <AppLayout />,
+      element: <LazyAppLayout />,
     }),
     [],
   );

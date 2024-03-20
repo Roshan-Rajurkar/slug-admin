@@ -1,3 +1,5 @@
 {
-    "app-name" : "SLUG"
+    "app-name" : "SLUG",
+    "required" : "Required",
+    "something-went-wrong" : "Something went wrong"
 }

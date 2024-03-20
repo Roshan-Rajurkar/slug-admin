@@ -7,6 +7,8 @@ import i18n from "./common/constants";
 import { I18nextProvider } from "react-i18next";
 import { BrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
 const queryClient = new QueryClient();
 
@@ -18,6 +20,18 @@ root.render(
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <I18nextProvider i18n={i18n}>
+          <ToastContainer
+            position="top-right"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
           <App />
         </I18nextProvider>
       </BrowserRouter>
