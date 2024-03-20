@@ -1,0 +1,10 @@
+{
+  "login": "Login",
+  "register": "Register",
+  "help": "Help",
+  "sign-in": "Sign In",
+  "sign-up": "Sign Up",
+  "already-have-account": "Already have account? Sign In",
+  "dont-have-an-account": "Don't have an account? Sign Up",
+  "sign-in-with-google": "Sign In With Google"
+}

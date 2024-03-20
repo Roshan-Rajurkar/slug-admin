@@ -14,7 +14,7 @@ const App = () => {
 
   const AuthRoutes: RouteObject = useMemo(
     () => ({
-      path: "/slug-admin/auth/*",
+      path: "auth/*",
       element: <AuthLayout />,
     }),
     [],
@@ -22,7 +22,7 @@ const App = () => {
 
   const AppRoutes: RouteObject = useMemo(
     () => ({
-      path: "/slug-admin/app/*",
+      path: "/app/*",
       element: <AppLayout />,
     }),
     [],
@@ -31,7 +31,7 @@ const App = () => {
   const DefaultRoutes: RouteObject = useMemo(
     () => ({
       path: "*",
-      element: <Navigate to={`/slug-admin/auth${search}`} replace />,
+      element: <Navigate to={`/auth${search}`} replace />,
     }),
     [search],
   );
