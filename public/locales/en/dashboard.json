@@ -1,0 +1,8 @@
+{
+  "sidenav": {
+    "dashboard": "Dashboard",
+    "products": "Products",
+    "customers": "Customers",
+    "settings": "Settings"
+  }
+}
