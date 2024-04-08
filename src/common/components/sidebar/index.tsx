@@ -7,7 +7,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import APP_LOGO from "../../../assets/slug-admin.png";
-import { Navigation } from "../../modals";
+import { NavigationType } from "../../modals";
 import { useNavigate } from "react-router-dom";
 import { useDrawer } from "../../hooks";
 import { Button } from "@mui/material";
@@ -15,7 +15,7 @@ import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import MenuIcon from "@mui/icons-material/Menu";
 
 type SideNavigationProps = {
-  navigation: Navigation[];
+  navigation: NavigationType[];
   onNavigationClick: (index: number) => void;
 };
 
@@ -28,7 +28,7 @@ const SideNavigation = ({
   const { isOpen, open, close } = useDrawer(true);
 
   const DrawerList = (
-    <Box sx={{ width: isOpen ? 200 : 60 }}>
+    <Box sx={{ width: isOpen ? 200 : 60, overflow: "hidden" }}>
       <Box
         sx={{
           width: "100%",
@@ -36,6 +36,9 @@ const SideNavigation = ({
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          marginBottom: 2,
+          paddingBottom: 1.7,
+          border: "1px solid #EEE",
         }}
       >
         {isOpen && (
@@ -70,15 +73,32 @@ const SideNavigation = ({
               sx={
                 item.active
                   ? {
-                      backgroundColor: "#DDD",
+                      backgroundColor: "#EEE",
                       "&:hover": {
-                        backgroundColor: "#DDD",
+                        backgroundColor: "#EEE",
                       },
                     }
-                  : {}
+                  : {} && {
+                      paddingRight: 2,
+                      paddingLeft: 2,
+                    }
               }
             >
-              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemIcon
+                sx={
+                  item.active
+                    ? {
+                        color: "blue",
+                        backgroundColor: "#EEE",
+                        "&:hover": {
+                          backgroundColor: "#EEE",
+                        },
+                      }
+                    : {}
+                }
+              >
+                {item.icon}
+              </ListItemIcon>
               {isOpen && <ListItemText primary={item.name} />}
             </ListItemButton>
           </ListItem>
@@ -94,6 +114,7 @@ const SideNavigation = ({
         top: 0,
         height: "100%",
         width: isOpen ? 200 : 60,
+        transition: "width 0.2s ease-in-out",
       }}
       variant="persistent"
       open={true}

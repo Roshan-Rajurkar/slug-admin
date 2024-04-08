@@ -1,5 +1,12 @@
 {
     "app-name" : "SLUG",
+    "sidenav": {
+        "dashboard": "Dashboard",
+        "products": "Products",
+        "customers": "Customers",
+        "settings": "Settings"
+      },
     "required" : "Required",
-    "something-went-wrong" : "Something went wrong"
+    "something-went-wrong" : "Something went wrong",
+    "search" : "Search"
 }

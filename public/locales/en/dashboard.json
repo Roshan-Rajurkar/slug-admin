@@ -1,8 +1,26 @@
 {
-  "sidenav": {
-    "dashboard": "Dashboard",
-    "products": "Products",
-    "customers": "Customers",
-    "settings": "Settings"
-  }
+  "total-sales" : "Total sales",
+  "total-orders" : "Total orders",
+  "total-purchases" : "Total purchases",
+  "sales-statistics" : "Sales statistics",
+  "users-status" : "User status",
+  "orders" : "Orders",
+  "sales" : "Sales",
+  "active" : "Active",
+  "inactive": "In-Active",
+   "months" : {
+    "jan": "Jan",
+    "feb": "Feb",
+    "mar": "Mar",
+    "apr": "Apr",
+    "may": "May",
+    "jun": "Jun",
+    "jul": "Jul",
+    "aug": "Aug",
+    "sept": "Sept",
+    "oct": "Oct",
+    "nov": "Nov",
+    "dec": "Dec"
+  },
+  "latest-orders" : "Latest orders"
 }

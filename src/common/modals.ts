@@ -1,4 +1,4 @@
-export interface Navigation {
+export interface NavigationType {
   name: string;
   href: string;
   active: boolean;
