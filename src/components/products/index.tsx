@@ -15,6 +15,7 @@ import UploadFileRoundedIcon from "@mui/icons-material/UploadFileRounded";
 import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
 import { useTranslation } from "react-i18next";
 import ProductList from "./productslist";
+import AddProduct from "./addProduct";
 
 const Layout = () => {
   const { t } = useTranslation("products");
@@ -142,7 +143,7 @@ const Products = () => {
 
       {
         path: "add_product",
-        element: <p>Add Product</p>,
+        element: <AddProduct />,
       },
 
       {

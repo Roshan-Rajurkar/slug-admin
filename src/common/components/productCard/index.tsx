@@ -4,7 +4,6 @@ import {
   Box,
   Button,
   Typography,
-  IconButton,
   Card,
   CardMedia,
   CardContent,
@@ -20,7 +19,7 @@ type ProductCardProps = {
 
 const ProductCard = ({ product, onEdit, onDelete }: ProductCardProps) => {
   return (
-    <Card sx={{ maxWidth: 250, maxHeight: 230, margin: 0, padding: 0 }}>
+    <Card sx={{ maxWidth: 200, maxHeight: 230, margin: 0, padding: 0 }}>
       <CardMedia
         component="img"
         height="130"

@@ -77,6 +77,7 @@ const SideNavigation = ({
                       "&:hover": {
                         backgroundColor: "#EEE",
                       },
+                      color: "blue",
                     }
                   : {} && {
                       paddingRight: 2,

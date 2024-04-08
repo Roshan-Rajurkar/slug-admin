@@ -25,18 +25,11 @@ const ProductsSideNav = ({
   return (
     <Box
       sx={{
-        width: 120,
+        width: 150,
         // height: "100vh",
         backgroundColor: "#fff",
       }}
     >
-      <Box
-        sx={{
-          textAlign: "center",
-        }}
-      >
-        <MoveDownRoundedIcon sx={{ color: "blue", padding: 1 }} />
-      </Box>
       <List>
         {navigation.map((item, index) => (
           <ListItemButton
