@@ -11,9 +11,11 @@ import { Navigate, Outlet, RouteObject, useRoutes } from "react-router-dom";
 import FullScreenLoader from "../../common/components/fullscreenloader";
 import AppNavigation from "../../common/components/appnavbar";
 import { Typography } from "@mui/material";
+import Customers from "../../components/customers";
 
 const LazyDashboard = React.lazy(() => import("../../components/dashboard"));
 const LazyProducts = React.lazy(() => import("../../components/products"));
+const LazyCustomers = React.lazy(() => import("../../components/customers"));
 
 const Layout = () => {
   const { t } = useTranslation();
@@ -63,14 +65,19 @@ const Layout = () => {
         onNavigationClick={handleNavigationClick}
       />
 
-      <Box sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
+      <Box
+        sx={{
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
         <AppNavigation />
         <Box
           sx={{
             padding: 2,
             flexDirection: "column",
             flexGrow: 1,
-            overflow: "auto",
           }}
         >
           {navigationItems?.map((item) =>
@@ -114,7 +121,7 @@ const AppLayout = () => {
       },
       {
         path: "customers",
-        element: <p>Customer component</p>,
+        element: <LazyCustomers />,
       },
       {
         path: "settings",
