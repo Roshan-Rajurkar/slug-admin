@@ -36,9 +36,7 @@ const SideNavigation = ({
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          marginBottom: 2,
-          paddingBottom: 1.7,
-          border: "1px solid #EEE",
+          paddingY: 1,
         }}
       >
         {isOpen && (

@@ -11,7 +11,6 @@ import { Navigate, Outlet, RouteObject, useRoutes } from "react-router-dom";
 import FullScreenLoader from "../../common/components/fullscreenloader";
 import AppNavigation from "../../common/components/appnavbar";
 import { Typography } from "@mui/material";
-import Customers from "../../components/customers";
 
 const LazyDashboard = React.lazy(() => import("../../components/dashboard"));
 const LazyProducts = React.lazy(() => import("../../components/products"));

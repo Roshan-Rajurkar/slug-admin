@@ -1,25 +1,34 @@
-import {useMutation } from "react-query"
-import { LoginFrom, RegisterForm } from "./modal";
+import {useMutation, useQuery } from "react-query"
+import { LoginForm, RegisterForm } from "./modal";
+import axios from 'axios'
 
+const Login_Endpoint = 'http://localhost:5000/api/auth/login'
+const Register_Endpoint = 'http://localhost:5000/api/auth/register'
+const getProfile_Endpoint = 'http://localhost:5000/api/auth/getprofile'
+const Logout_Endpoint = 'http://localhost:5000/api/auth/logout'
 
-class AuthServices {
+export class AuthServices {
 
-    public static signup(user:RegisterForm){
-        console.log(user)
-        return Promise.resolve(user);
+    public static async signup(user:RegisterForm){
+        const res = await axios.post(Register_Endpoint, user);
+        console.log(res)
+        return res;
     }
 
-    public static signin(user:LoginFrom){
-        console.log(user)
-        return Promise.resolve(user)
+    public static async signin(user:LoginForm){
+        const res = await axios.post(Login_Endpoint, user);
+        console.log(res)
+        return res;
     }
 
-    public static getUserProfile(){
-        return Promise.resolve(1)
+    public static async getUserProfile() : Promise<any>{
+        const res = await axios.get(getProfile_Endpoint);
+        return res;
     }
 
-    public static logout(){
-        return Promise.resolve(1)
+    public static async logout(){
+        const res = await axios.get(Logout_Endpoint);
+        return res;
     }
 }
 
@@ -27,4 +36,8 @@ class AuthServices {
 // use all services
 export const useSignUp = () =>  useMutation((user : RegisterForm) => AuthServices.signup(user))
 
-export const useSignIn = () =>  useMutation((user : LoginFrom) => AuthServices.signin(user))
+export const useSignIn = () =>  useMutation((user : LoginForm) => AuthServices.signin(user))
+
+export const useGetProfile = () =>  useQuery(['CURRENT_USER'],AuthServices.getUserProfile);
+
+export const useLogout = () =>  useMutation(AuthServices.logout)

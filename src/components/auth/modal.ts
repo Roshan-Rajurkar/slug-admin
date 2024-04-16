@@ -1,10 +1,10 @@
-export interface RegisterForm {
+export type RegisterForm =  {
     username : string,
     email : string,
     password : string
 }
 
-export interface LoginFrom {
-    username : string,
+export type LoginForm = {
+    email : string,
     password : string
 }

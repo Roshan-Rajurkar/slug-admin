@@ -5,7 +5,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import { Link, useLocation } from "react-router-dom";
 import { NavigationType } from "../../modals";
-import MoveDownRoundedIcon from "@mui/icons-material/MoveDownRounded";
+import { Container } from "@mui/material";
 
 type ProductsSideNavProps = {
   navigation: NavigationType[];
@@ -25,12 +25,15 @@ const ProductsSideNav = ({
   return (
     <Box
       sx={{
-        width: 150,
-        // height: "100vh",
-        backgroundColor: "#fff",
+        display: "flex",
+        justifyContent: "center",
       }}
     >
-      <List>
+      <List
+        sx={{
+          backgroundColor: "#fff",
+        }}
+      >
         {navigation.map((item, index) => (
           <ListItemButton
             key={item.href}
@@ -43,7 +46,10 @@ const ProductsSideNav = ({
               paddingX: 1,
             }}
           >
-            <ListItemText primary={item.name} />
+            <ListItemText
+              sx={{ width: "100%", fontSize: "1rem" }}
+              primary={item.name}
+            />
           </ListItemButton>
         ))}
       </List>

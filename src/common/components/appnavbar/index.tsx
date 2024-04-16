@@ -1,4 +1,3 @@
-import * as React from "react";
 import { styled } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -9,8 +8,15 @@ import Badge from "@mui/material/Badge";
 import SearchIcon from "@mui/icons-material/Search";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { useTranslation } from "react-i18next";
-import { Avatar } from "@mui/material";
+import { Button, Avatar, Typography, Popper } from "@mui/material";
 import USER_PROFILE from "../../../assets/slug-admin.png";
+import { useGetProfile, useLogout } from "../../../components/auth/service";
+import { useCallback, useEffect, useState } from "react";
+import FullScreenLoader from "../fullscreenloader";
+import { Output, PersonPin } from "@mui/icons-material";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -51,7 +57,29 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function AppNavigation() {
-  const { t } = useTranslation();
+  const { t } = useTranslation(["dashboard", "authentication"]);
+  const navigate = useNavigate();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const handleClick = useCallback((event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl((prevAnchorEl) => (prevAnchorEl ? null : event.currentTarget));
+  }, []);
+
+  const { data: currentUser, isLoading } = useGetProfile();
+  const { mutate: logout } = useLogout();
+
+  const open = Boolean(anchorEl);
+  const id = open ? "user-popper" : undefined;
+
+  const handleLogout = useCallback(async () => {
+    try {
+      await logout();
+      navigate("/auth/login");
+      toast.success(t("logout-successfully", { ns: "authentication" }));
+    } catch (error) {
+      toast.success(t("something-went-wrong", { ns: "translation" }));
+    }
+  }, [logout, navigate, t]);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -80,24 +108,113 @@ export default function AppNavigation() {
             />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
+          <Box sx={{ display: { xs: "none", md: "flex", gap: 8 } }}>
             <IconButton size="large" aria-label="show 17 new notifications">
               <Badge badgeContent={17} color="error">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
 
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
+            <Box
+              onClick={handleClick}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+                cursor: "pointer",
+                padding: 1,
+              }}
             >
               <Avatar
                 alt="NAME"
-                src={USER_PROFILE}
-                sx={{ width: 32, height: 32, border: "1px solid #DDDDDD" }}
+                src={!isLoading ? USER_PROFILE : ""}
+                sx={{
+                  width: 36,
+                  height: 36,
+                  border: "1px solid #DDDDDD",
+                }}
               />
-            </IconButton>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  paddingX: 1,
+                  borderRadius: 3,
+                  "&:hover": {
+                    backgroundColor: "#F5F5F5",
+                  },
+                }}
+              >
+                {isLoading ? (
+                  <Typography variant="subtitle1" color="text.secondary">
+                    {t("loading")}
+                  </Typography>
+                ) : (
+                  <>
+                    <Typography variant="subtitle1" color="text.primary">
+                      {currentUser?.username || "roshan09096"}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary">
+                      {currentUser?.email || "roshan@gmail.com"}
+                    </Typography>
+                  </>
+                )}
+              </Box>
+              <Popper
+                id={id}
+                open={open}
+                anchorEl={anchorEl}
+                placement="bottom"
+                sx={{
+                  border: "none",
+                  boxShadow: "0px 8px 16px 0px rgba(0,0,0,0.1)",
+                  "&[data-popper-reference-hidden]": {
+                    display: "none",
+                  },
+                }}
+              >
+                <Box
+                  sx={{
+                    border: 1,
+                    p: 1,
+                    bgcolor: "background.paper",
+                    width: 150,
+                  }}
+                >
+                  <Button
+                    fullWidth
+                    sx={{
+                      // display: "block",
+                      textDecoration: "none",
+                      color: "inherit",
+                      textTransform: "none",
+                      "&:hover": {
+                        bgcolor: "action.hover",
+                      },
+                    }}
+                    startIcon={<PersonPin />}
+                  >
+                    {t("view-profile")}
+                  </Button>
+                  <Button
+                    fullWidth
+                    sx={{
+                      textDecoration: "none",
+                      color: "inherit",
+                      textTransform: "none",
+                      "&:hover": {
+                        bgcolor: "action.hover",
+                      },
+                    }}
+                    startIcon={<Output />}
+                    onClick={handleLogout}
+                  >
+                    {t("sign-out", { ns: "authentication" })}
+                  </Button>
+                </Box>
+              </Popper>
+            </Box>
           </Box>
         </Toolbar>
       </AppBar>

@@ -1,11 +1,16 @@
 import React, { useState } from "react";
 import ProductCard from "../../../common/components/productCard";
-import mockProducts from "../mock";
 import { Box, Typography, Button } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import { ImportExportOutlined } from "@mui/icons-material";
+import { useGetAllProducts } from "../service";
+import { Product } from "../modals";
 
 const ProductList = () => {
   const { t } = useTranslation("products");
+
+  const { data: products, isLoading } = useGetAllProducts();
+  console.log(products);
 
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
@@ -19,58 +24,83 @@ const ProductList = () => {
 
   const handleNextPage = () => {
     setPage((prevPage) =>
-      Math.min(prevPage + 1, Math.ceil(mockProducts.length / itemsPerPage)),
+      Math.min(prevPage + 1, Math.ceil(products?.length / itemsPerPage)),
     );
   };
 
   return (
-    <Box sx={{ marginTop: 1 }}>
-      <Typography variant="h6" align="center" mb={2}>
-        {t("available-products")}
-      </Typography>
+    <Box
+      sx={{
+        marginTop: 0.5,
+        borderRadius: 0,
+        // borderTop: 1,
+        borderColor: "#E0E0E0",
+        paddingX: 8,
+      }}
+    >
+      <Box
+        sx={{ display: "flex", justifyContent: "space-between", marginTop: 1 }}
+      >
+        <Typography variant="h6" align="center" mb={1.5}>
+          {t("available-products")}
+        </Typography>
+
+        <Box>
+          {/* <Button >Category</Button> */}
+
+          <Button
+            sx={{ backgroundColor: "#fff", color: "#949494" }}
+            startIcon={<ImportExportOutlined />}
+          >
+            {t("latest-added")}
+          </Button>
+        </Box>
+      </Box>
       <Box
         sx={{
           display: "flex",
-          gap: 2,
           flexWrap: "wrap",
-          justifyContent: "space-around",
+          gap: 2,
+          justifyContent: "start",
         }}
       >
-        {mockProducts.slice(startIndex, endIndex).map((product) => (
+        {products?.map((product: any) => (
           <ProductCard product={product} key={product.id} />
         ))}
       </Box>
 
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "flex-end",
-          marginTop: 1.5,
-        }}
-      >
-        <Button
-          variant="outlined"
-          onClick={handlePrevPage}
-          disabled={page === 1}
-        >
-          Prev
-        </Button>
-        <Button
+      {products?.length > 10 && (
+        <Box
           sx={{
-            paddingX: 0,
+            display: "flex",
+            justifyContent: "flex-end",
+            marginTop: 1.5,
           }}
-          variant="contained"
         >
-          {page}
-        </Button>
-        <Button
-          variant="outlined"
-          onClick={handleNextPage}
-          disabled={endIndex >= mockProducts.length}
-        >
-          Next
-        </Button>
-      </Box>
+          <Button
+            variant="outlined"
+            onClick={handlePrevPage}
+            disabled={page === 1}
+          >
+            Prev
+          </Button>
+          <Button
+            sx={{
+              paddingX: 0,
+            }}
+            variant="contained"
+          >
+            {page}
+          </Button>
+          <Button
+            variant="outlined"
+            onClick={handleNextPage}
+            disabled={endIndex >= products?.length}
+          >
+            Next
+          </Button>
+        </Box>
+      )}
     </Box>
   );
 };

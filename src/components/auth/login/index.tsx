@@ -12,7 +12,7 @@ import { useTranslation } from "react-i18next";
 import { useCallback } from "react";
 import PersonIcon from "@mui/icons-material/Person";
 import { useForm } from "react-hook-form";
-import { LoginFrom } from "../modal";
+import { LoginForm } from "../modal";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useSignIn } from "../service";
@@ -24,10 +24,13 @@ function AuthLogin() {
 
   const navigate = useNavigate();
 
-  const { mutate: signIn } = useSignIn();
+  const { mutate: signIn, isLoading } = useSignIn();
 
   const validationSchema = yup.object().shape({
-    username: yup.string().required(t("required", { ns: "translation" })),
+    email: yup
+      .string()
+      .email(t("invalid-email"))
+      .required(t("required", { ns: "translation" })),
     password: yup.string().required(t("required", { ns: "translation" })),
   });
 
@@ -35,13 +38,13 @@ function AuthLogin() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFrom>({
+  } = useForm<LoginForm>({
     resolver: yupResolver(validationSchema),
   });
 
   // Handle form submission
   const handleLoginIn = useCallback(
-    (data: LoginFrom) => {
+    (data: LoginForm) => {
       if (data) {
         signIn(data, {
           onSuccess: () => {
@@ -84,11 +87,11 @@ function AuthLogin() {
             margin="normal"
             required
             fullWidth
-            id="username"
-            label={t("username")}
-            error={!!errors.username}
-            helperText={errors.username && errors.username.message}
-            {...register("username")}
+            id="email"
+            label={t("email")}
+            error={!!errors.email}
+            helperText={errors.email && errors.email.message}
+            {...register("email")}
             autoFocus
           />
           <TextField
@@ -105,10 +108,10 @@ function AuthLogin() {
           <Button
             type="submit"
             fullWidth
-            variant="contained"
+            variant={isLoading ? "outlined" : "contained"}
             sx={{ mt: 2, mb: 2 }}
           >
-            {t("sign-in")}
+            {isLoading ? t("signing") : t("sign-in")}
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>

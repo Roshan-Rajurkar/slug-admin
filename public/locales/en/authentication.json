@@ -4,9 +4,11 @@
   "help": "Help",
   "sign-in": "Sign In",
   "sign-up": "Sign Up",
+  "sign-out" : "Sign out",
   "already-have-account": "Already have account? Sign In",
   "dont-have-an-account": "Don't have an account? Sign Up",
   "sign-in-with-google": "Sign In With Google",
+  "signing" : "Signing",
   "username" : "Username",
   "email" : "Email",
   "password" : "Password",
@@ -14,5 +16,6 @@
   "sign-up-successfully" : "Sign-Up successfully",
   "invalid-email" : "Invalid Email",
   "min-length" : "Minimum length should be 6",
-  "username-validation" : "Password should have both characters and numbers"
+  "username-validation" : "Password should have both characters and numbers",
+  "logout-successfully" : "Logout successfully"
 }

@@ -43,7 +43,7 @@ function AuthRegister() {
       .min(6, t("min-length", { min: 6 })),
   });
 
-  const { mutate: signUp } = useSignUp();
+  const { mutate: signUp, isLoading } = useSignUp();
 
   const {
     register,
@@ -128,10 +128,10 @@ function AuthRegister() {
           <Button
             type="submit"
             fullWidth
-            variant="contained"
+            variant={isLoading ? "outlined" : "contained"}
             sx={{ mt: 2, mb: 2 }}
           >
-            {t("sign-up")}
+            {isLoading ? t("signing") : t("sign-up")}
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>

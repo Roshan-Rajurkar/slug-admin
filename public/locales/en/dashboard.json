@@ -22,5 +22,8 @@
     "nov": "Nov",
     "dec": "Dec"
   },
-  "latest-orders" : "Latest orders"
+  "latest-orders" : "Latest orders",
+  "loading" : "loading...",
+  "view-profile" : "View profile",
+  "search" : "Search..."
 }

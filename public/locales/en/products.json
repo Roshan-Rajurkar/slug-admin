@@ -1,7 +1,22 @@
 {
-    "products-grid" : "Products Grid",
+    "products-grid" : "Products",
     "products-list" : "Products list",
     "add-product" : "Add product",
     "export" : "Export",
-    "available-products" : "Available Products"
+    "available-products" : "Available Products",
+    "latest-added" : "Latest added",
+    "category" : "Category",
+    "create-product" : "Create product",
+    "edit-product" : "Edit product",
+    "name" : "Name",
+    "enter-name" : "Enter name",
+    "description" : "Description",
+    "type-here" : "Type here",
+    "price" : "Price",
+    "enter-price" : "Enter price",
+    "price-in-rupees" : "Price in rupees",
+    "publish-on-app" : "Publish product on app",
+    "image" : "Image",
+    "submit-item" : "Submit item",
+    "required" : "Required"
 }

@@ -8,5 +8,7 @@
       },
     "required" : "Required",
     "something-went-wrong" : "Something went wrong",
-    "search" : "Search"
+    "search" : "Search",
+    "edit" : "Edit",
+    "delete" : "Delete"
 }

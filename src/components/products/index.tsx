@@ -15,7 +15,7 @@ import UploadFileRoundedIcon from "@mui/icons-material/UploadFileRounded";
 import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
 import { useTranslation } from "react-i18next";
 import ProductList from "./productslist";
-import AddProduct from "./addProduct";
+import AddProduct from "./add-edit-product";
 
 const Layout = () => {
   const { t } = useTranslation("products");
@@ -111,13 +111,13 @@ const Layout = () => {
       </Box>
       {/* <Box sx={{ display: "flex", gap: 2 }}> */}
       <Grid container justifyContent="space-around">
-        <Grid item xs={2}>
+        <Grid item xs={1}>
           <ProductsSideNav
             navigation={navigationItems}
             onNavigationClick={handleNavigationClick}
           />
         </Grid>
-        <Grid item xs={10} overflow="auto">
+        <Grid item xs={11}>
           <Outlet />
         </Grid>
       </Grid>
@@ -143,6 +143,11 @@ const Products = () => {
 
       {
         path: "add_product",
+        element: <AddProduct />,
+      },
+
+      {
+        path: "edit_product/:id",
         element: <AddProduct />,
       },
 
