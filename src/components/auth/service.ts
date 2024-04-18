@@ -2,13 +2,15 @@ import {useMutation, useQuery } from "react-query"
 import { LoginForm, RegisterForm } from "./modal";
 import axios from 'axios'
 
-const Login_Endpoint = 'http://localhost:5000/api/auth/login'
-const Register_Endpoint = 'http://localhost:5000/api/auth/register'
-const getProfile_Endpoint = 'http://localhost:5000/api/auth/getprofile'
-const Logout_Endpoint = 'http://localhost:5000/api/auth/logout'
+
+
+const Login_Endpoint = 'https://slug-server.onrender.com/api/auth/login'
+const Register_Endpoint = 'https://slug-server.onrender.com/api/auth/register'
+const getProfile_Endpoint = 'https://slug-server.onrender.com/api/auth/getprofile'
+const Logout_Endpoint = 'https://slug-server.onrender.com/api/auth/logout'
 
 export class AuthServices {
-
+    
     public static async signup(user:RegisterForm){
         const res = await axios.post(Register_Endpoint, user);
         console.log(res)

@@ -12,25 +12,37 @@ import {
   FormControlLabel,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ProductForm } from "../modals";
+import { useAddProduct, useGetProductById, useUpdateProduct } from "../service";
+import { toast } from "react-toastify";
+import FullScreenLoader from "../../../common/components/fullscreenloader";
+import { Adjust, Loop } from "@mui/icons-material";
 
 const AddEditProduct = () => {
   const { t } = useTranslation(["products", "translation"]);
   const { id } = useParams<{ id?: string }>();
 
-  const isEdit = useMemo(() => !!id, [id]);
+  const isEditMode = useMemo(() => !!id, [id]);
+
+  const navigate = useNavigate();
+
+  const { mutate: addProduct, isLoading: isAdding } = useAddProduct();
+  const { mutate: updateProduct, isLoading: isUpdating } = useUpdateProduct();
+  const { data: product, isLoading: isEditLoading } = useGetProductById(
+    id || "",
+  );
 
   const validationSchema = yup.object().shape({
     name: yup.string().required(t("required", { ns: "translation" })),
     description: yup.string().required(t("required", { ns: "translation" })),
-    price: yup.string().required(t("required", { ns: "translation" })),
+    price: yup.number().required(t("required", { ns: "translation" })),
   });
 
   const productEditMock = {
     name: "Product edit name",
     description: "Product description edit",
-    price: "200",
+    price: 200,
     published: true,
   };
 
@@ -42,22 +54,53 @@ const AddEditProduct = () => {
     reset,
   } = useForm<ProductForm>({
     resolver: yupResolver(validationSchema) as any,
-    defaultValues: !isEdit
-      ? { name: "", description: "", price: "", published: false }
+    defaultValues: !isEditMode
+      ? { name: "", description: "", price: 0, published: false }
       : productEditMock,
   });
 
   const handleProductSubmit = (data: ProductForm) => {
-    console.log(data);
+    if (data) {
+      if (isEditMode) {
+        // edit product
+        updateProduct(
+          {
+            productId: id || "",
+            product: data,
+          },
+          {
+            onSuccess: () => {
+              toast.success(t("product-edited-successfully"));
+              navigate("../");
+            },
+            onError: () => {
+              toast.error(t("something-went-wrong", { ns: "translation" }));
+            },
+          },
+        );
+      } else {
+        addProduct(data, {
+          onSuccess: () => {
+            toast.success(t("product-added-successfully"));
+            navigate("../");
+          },
+          onError: () => {
+            toast.error(t("something-went-wrong", { ns: "translation" }));
+          },
+        });
+      }
+    }
   };
 
   useEffect(() => {
-    if (!isEdit)
-      reset({ name: "", description: "", price: "", published: false });
-    else {
-      // getProduct by Id and reset it
+    if (isEditMode && product) {
+      reset(product);
+    } else {
+      reset({ name: "", description: "", price: 0, published: false });
     }
-  }, [reset, isEdit]);
+  }, [reset, isEditMode, product]);
+
+  if (isEditLoading) return <FullScreenLoader />;
 
   return (
     <Box
@@ -76,7 +119,7 @@ const AddEditProduct = () => {
         }}
       >
         <Typography variant="h5" marginBottom={2} fontWeight="bold">
-          {isEdit ? t("edit-product") : t("create-product")}
+          {isEditMode ? t("edit-product") : t("create-product")}
         </Typography>
 
         <form onSubmit={handleSubmit(handleProductSubmit)}>
@@ -143,7 +186,7 @@ const AddEditProduct = () => {
                   render={({ field }) => (
                     <Switch
                       {...field}
-                      defaultChecked={isEdit && productEditMock?.published}
+                      defaultChecked={isEditMode && productEditMock?.published}
                       color="error"
                       name="check product"
                     />
@@ -154,7 +197,12 @@ const AddEditProduct = () => {
             />
           </FormControl>
 
-          <Button type="submit" variant="contained" color="primary">
+          <Button
+            startIcon={isAdding || isUpdating ? <Loop /> : <Adjust />}
+            type="submit"
+            variant="contained"
+            color="primary"
+          >
             {t("submit-item")}
           </Button>
         </form>

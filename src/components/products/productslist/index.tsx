@@ -5,12 +5,13 @@ import { useTranslation } from "react-i18next";
 import { ImportExportOutlined } from "@mui/icons-material";
 import { useGetAllProducts } from "../service";
 import { Product } from "../modals";
+import FullScreenLoader from "../../../common/components/fullscreenloader";
+import { Link } from "react-router-dom";
 
 const ProductList = () => {
   const { t } = useTranslation("products");
 
   const { data: products, isLoading } = useGetAllProducts();
-  console.log(products);
 
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
@@ -28,6 +29,8 @@ const ProductList = () => {
     );
   };
 
+  if (isLoading) return <FullScreenLoader />;
+
   return (
     <Box
       sx={{
@@ -42,7 +45,7 @@ const ProductList = () => {
         sx={{ display: "flex", justifyContent: "space-between", marginTop: 1 }}
       >
         <Typography variant="h6" align="center" mb={1.5}>
-          {t("available-products")}
+          {products?.length === 0 ? t("no-products") : t("available-products")}
         </Typography>
 
         <Box>
@@ -64,8 +67,8 @@ const ProductList = () => {
           justifyContent: "start",
         }}
       >
-        {products?.map((product: any) => (
-          <ProductCard product={product} key={product.id} />
+        {products?.map((product: Product) => (
+          <ProductCard product={product} key={product._id} />
         ))}
       </Box>
 

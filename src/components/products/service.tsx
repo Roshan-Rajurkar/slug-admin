@@ -4,33 +4,41 @@ import axios from "axios";
 
 class ProductService {
   public static async getAllProducts() {
-    console.log(process.env.LOCAL_HOST_ENDPOINT);
     const res = await axios.get(
-      "http://localhost:5000/api/app/get_all_products",
+      "https://slug-server.onrender.com/api/app/get_all_products",
+    );
+    console.log(res.data.data);
+    return await res.data.data;
+  }
+
+  public static async getProductById(productId: string) {
+    const res = await axios.get(
+      `https://slug-server.onrender.com/api/app/get_product/${productId}`,
     );
 
     return await res.data.data;
   }
 
-  public static async addProduct(data: ProductForm) {
+  public static async addProduct(product: ProductForm) {
     const res = await axios.post(
-      "http://localhost:5000/api/app/add_product",
-      data,
+      "https://slug-server.onrender.com/api/app/add_product",
+      product,
     );
     return res;
   }
 
-  public static async updateProduct(productId: string, data: ProductForm) {
+  public static async updateProduct(productId: string, product: ProductForm) {
     const res = await axios.put(
-      "http://localhost:5000/api/app/edit_product/" + productId,
-      data,
+      `https://slug-server.onrender.com/api/app/edit_product/${productId}`,
+      product,
     );
+    console.log(res);
     return res;
   }
 
   public static async deleteProduct(productId: string) {
     const res = await axios.delete(
-      "http://localhost:5000/api/app/get_all_products/" + productId,
+      `https://slug-server.onrender.com/api/app/delete_product/${productId}`,
     );
     return res;
   }
@@ -39,27 +47,53 @@ class ProductService {
 // query keys for caching
 const PRODUCT_QUERY_KEYS = {
   GET_ALL_PRODUCTS: "GET_ALL_PRODUCTS",
+  GET_ALL_PRODUCTS_BY_ID: "GET_ALL_PRODUCT_BY_ID",
 };
 
 export const useGetAllProducts = () =>
   useQuery(PRODUCT_QUERY_KEYS.GET_ALL_PRODUCTS, ProductService.getAllProducts);
 
+export const useGetProductById = (productId: string) =>
+  useQuery(
+    [PRODUCT_QUERY_KEYS.GET_ALL_PRODUCTS_BY_ID, productId],
+    () => ProductService.getProductById(productId),
+    {
+      enabled: !!productId,
+    },
+  );
+
 export const useAddProduct = () => {
   const queryClient = useQueryClient();
 
-  return useMutation((data: ProductForm) => ProductService.addProduct(data), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(PRODUCT_QUERY_KEYS.GET_ALL_PRODUCTS);
+  return useMutation(
+    (product: ProductForm) => ProductService.addProduct(product),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(PRODUCT_QUERY_KEYS.GET_ALL_PRODUCTS);
+      },
     },
-  });
+  );
 };
 
 export const useUpdateProduct = () => {
   const queryClient = useQueryClient();
 
   return useMutation(
-    (payload: { productId: string; data: ProductForm }) =>
-      ProductService.updateProduct(payload.productId, payload.data),
+    (payload: { productId: string; product: ProductForm }) =>
+      ProductService.updateProduct(payload.productId, payload.product),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(PRODUCT_QUERY_KEYS.GET_ALL_PRODUCTS);
+      },
+    },
+  );
+};
+
+export const useDeleteProduct = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation(
+    (productId: string) => ProductService.deleteProduct(productId),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(PRODUCT_QUERY_KEYS.GET_ALL_PRODUCTS);

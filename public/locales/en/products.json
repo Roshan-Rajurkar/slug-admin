@@ -18,5 +18,8 @@
     "publish-on-app" : "Publish product on app",
     "image" : "Image",
     "submit-item" : "Submit item",
-    "required" : "Required"
+    "required" : "Required",
+    "no-products" : "No products",
+    "product-added-successfully" : "Product added successfully",
+    "product-edited-successfully" : "Product updated successfully"
 }

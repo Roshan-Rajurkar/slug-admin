@@ -13,6 +13,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { useDeleteProduct } from "../../../components/products/service";
+import { Loop } from "@mui/icons-material";
 
 type ProductCardProps = {
   product: Product;
@@ -23,6 +25,8 @@ type ProductCardProps = {
 const ProductCard = ({ product, onEdit, onDelete }: ProductCardProps) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+
+  const { mutate: deleteProduct, isLoading } = useDeleteProduct();
 
   return (
     <Card
@@ -81,11 +85,17 @@ const ProductCard = ({ product, onEdit, onDelete }: ProductCardProps) => {
         >
           <Button
             startIcon={<EditIcon />}
-            onClick={() => navigate(`/app/products/edit_product/${product.id}`)}
+            onClick={() =>
+              navigate(`/app/products/edit_product/${product._id}`)
+            }
           >
             {t("edit")}
           </Button>
-          <Button color="error" startIcon={<DeleteIcon />}>
+          <Button
+            color="error"
+            startIcon={isLoading ? <Loop /> : <DeleteIcon />}
+            onClick={() => deleteProduct(product._id)}
+          >
             {t("delete")}
           </Button>
         </Box>

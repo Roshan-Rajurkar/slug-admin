@@ -1,8 +1,8 @@
 export type Product = {
-    id: string; 
+    _id: string; 
     name: string; 
     description: string; 
-    price: string; 
+    price: number; 
     imageUrl: string;
     published : boolean 
   };
@@ -10,6 +10,7 @@ export type Product = {
   export type ProductForm = {
     name : string,
     description : string,
-    price : string,
-    published : boolean
+    price : number,
+    published : boolean,
+    imageUrl?: string;
   }
