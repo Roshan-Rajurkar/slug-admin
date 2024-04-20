@@ -2,8 +2,6 @@ import {useMutation, useQuery } from "react-query"
 import { LoginForm, RegisterForm } from "./modal";
 import axios from 'axios'
 
-
-
 const Login_Endpoint = 'https://slug-server.onrender.com/api/auth/login'
 const Register_Endpoint = 'https://slug-server.onrender.com/api/auth/register'
 const getProfile_Endpoint = 'https://slug-server.onrender.com/api/auth/getprofile'

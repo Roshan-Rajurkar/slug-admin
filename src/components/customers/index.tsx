@@ -1,18 +1,29 @@
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import CustomerHeader from "./customerHeader";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import CustomerCard from "./customerCard";
-import { mockCustomers } from "./mock";
+// import { mockCustomers } from "./mock";
+import { useGetCustomers } from "./services";
+import FullScreenLoader from "../../common/components/fullscreenloader";
+import { useTranslation } from "react-i18next";
 
 const Customers = () => {
+  const { t } = useTranslation("customers");
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [CountQuery, setSelectedCount] = useState<number | string>(10);
+  const [limit, setSelectedCount] = useState<number | null>(null);
+  const [orderBy, setOrderBy] = useState<string>("desc");
+
+  const { data: customers, isLoading } = useGetCustomers({
+    searchQuery,
+    limit,
+    orderBy,
+  });
 
   const handleSearch = (value: string) => {
     setSearchQuery(value);
   };
 
-  const handleSelectChange = (value: number | string) => {
+  const handleSelectChange = (value: number) => {
     setSelectedCount(value);
   };
 
@@ -28,6 +39,9 @@ const Customers = () => {
         }}
       >
         <CustomerHeader
+          searchQueryVal={searchQuery}
+          orderVal={orderBy}
+          onSelectOrderBy={setOrderBy}
           onSearch={handleSearch}
           onSelectShow={handleSelectChange}
         />
@@ -44,9 +58,15 @@ const Customers = () => {
             gap: 3,
           }}
         >
-          {mockCustomers.map((customer) => (
-            <CustomerCard customer={customer} />
-          ))}
+          {isLoading ? (
+            <FullScreenLoader />
+          ) : customers.length === 0 ? (
+            <Typography>{t("no-match-customers")}</Typography>
+          ) : (
+            customers.map((customer: any) => (
+              <CustomerCard customer={customer} />
+            ))
+          )}
         </Box>
       </Box>
     </>

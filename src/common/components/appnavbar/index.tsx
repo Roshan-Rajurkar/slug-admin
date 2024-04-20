@@ -15,7 +15,7 @@ import { useCallback, useEffect, useState } from "react";
 import FullScreenLoader from "../fullscreenloader";
 import { Output, PersonPin } from "@mui/icons-material";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const Search = styled("div")(({ theme }) => ({
@@ -73,7 +73,7 @@ export default function AppNavigation() {
 
   const handleLogout = useCallback(async () => {
     try {
-      await logout();
+      logout();
       navigate("/auth/login");
       toast.success(t("logout-successfully", { ns: "authentication" }));
     } catch (error) {
@@ -182,21 +182,6 @@ export default function AppNavigation() {
                     width: 150,
                   }}
                 >
-                  <Button
-                    fullWidth
-                    sx={{
-                      // display: "block",
-                      textDecoration: "none",
-                      color: "inherit",
-                      textTransform: "none",
-                      "&:hover": {
-                        bgcolor: "action.hover",
-                      },
-                    }}
-                    startIcon={<PersonPin />}
-                  >
-                    {t("view-profile")}
-                  </Button>
                   <Button
                     fullWidth
                     sx={{

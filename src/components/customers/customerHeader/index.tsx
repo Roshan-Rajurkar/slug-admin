@@ -12,22 +12,31 @@ import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
 interface CustomerHeaderProps {
+  orderVal: string;
+  searchQueryVal: string;
   onSearch: (value: string) => void;
-  onSelectShow: (value: number | string) => void;
+  onSelectShow: (value: number) => void;
+  onSelectOrderBy: (value: string) => void;
 }
 
-const CustomerHeader = ({ onSearch, onSelectShow }: CustomerHeaderProps) => {
+const CustomerHeader = ({
+  orderVal,
+  searchQueryVal,
+  onSearch,
+  onSelectShow,
+  onSelectOrderBy,
+}: CustomerHeaderProps) => {
   const { t } = useTranslation(["customers"]);
 
-  const handleSeachSubmit = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      onSearch(e.target.value);
-    },
-    [onSearch],
-  );
-
-  const handleSelectChange = (value: number | string) => {
+  const handleSearchSubmit = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onSearch(e.target.value);
+  };
+  const handleSelectChange = (value: number) => {
     onSelectShow(value);
+  };
+
+  const handleOrderBy = (value: string) => {
+    onSelectOrderBy(value);
   };
 
   return (
@@ -37,7 +46,7 @@ const CustomerHeader = ({ onSearch, onSelectShow }: CustomerHeaderProps) => {
           id="outlined-basic"
           size="small"
           variant="outlined"
-          onChange={handleSeachSubmit}
+          onChange={handleSearchSubmit}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -54,6 +63,7 @@ const CustomerHeader = ({ onSearch, onSelectShow }: CustomerHeaderProps) => {
             },
           }}
           placeholder={t("search-customer")}
+          value={searchQueryVal}
         />
         <Box
           sx={{
@@ -64,9 +74,7 @@ const CustomerHeader = ({ onSearch, onSelectShow }: CustomerHeaderProps) => {
         >
           <Select
             defaultValue={10}
-            onChange={(e) =>
-              handleSelectChange(e.target.value as number | string)
-            }
+            onChange={(e) => handleSelectChange(e.target.value as number)}
             variant="outlined"
             size="small"
             sx={{
@@ -84,9 +92,9 @@ const CustomerHeader = ({ onSearch, onSelectShow }: CustomerHeaderProps) => {
               {t("show")} {t("20")}
             </MenuItem>
             <MenuItem value={50}>
-              {t("show")} {t("30")}
+              {t("show")} {t("50")}
             </MenuItem>
-            <MenuItem value={"all"}>
+            <MenuItem value={undefined + "All"}>
               {t("show")} {t("all")}
             </MenuItem>
           </Select>
@@ -101,6 +109,7 @@ const CustomerHeader = ({ onSearch, onSelectShow }: CustomerHeaderProps) => {
               },
             }}
             endIcon={<SwapVertIcon />}
+            onClick={() => handleOrderBy(orderVal === "desc" ? "asc" : "desc")}
           >
             {t("date")}
           </Button>

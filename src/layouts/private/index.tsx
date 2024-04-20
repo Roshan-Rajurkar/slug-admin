@@ -15,6 +15,7 @@ import { Typography } from "@mui/material";
 const LazyDashboard = React.lazy(() => import("../../components/dashboard"));
 const LazyProducts = React.lazy(() => import("../../components/products"));
 const LazyCustomers = React.lazy(() => import("../../components/customers"));
+const LazySettings = React.lazy(() => import("../../components/settings"));
 
 const Layout = () => {
   const { t } = useTranslation();
@@ -123,8 +124,8 @@ const AppLayout = () => {
         element: <LazyCustomers />,
       },
       {
-        path: "settings",
-        element: <p>Settings component</p>,
+        path: "settings/*",
+        element: <LazySettings />,
       },
       {
         path: "*",

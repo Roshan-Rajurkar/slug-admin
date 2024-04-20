@@ -16,6 +16,6 @@
   "sign-up-successfully" : "Sign-Up successfully",
   "invalid-email" : "Invalid Email",
   "min-length" : "Minimum length should be 6",
-  "username-validation" : "Password should have both characters and numbers",
+  "username-validation" : "Username should have both characters and numbers",
   "logout-successfully" : "Logout successfully"
 }

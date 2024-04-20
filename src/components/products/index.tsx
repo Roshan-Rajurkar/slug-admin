@@ -9,7 +9,7 @@ import {
 } from "react-router-dom";
 import FullScreenLoader from "../../common/components/fullscreenloader";
 import { Box, Button, Grid, Typography } from "@mui/material";
-import ProductsSideNav from "../../common/components/productssidenav";
+import ProductsSideNav from "../../common/components/sidesubnavigation";
 import { NavigationType } from "../../common/modals";
 import UploadFileRoundedIcon from "@mui/icons-material/UploadFileRounded";
 import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
