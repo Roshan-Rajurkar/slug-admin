@@ -14,9 +14,12 @@ export class CustomersServices {
     }
 
     static async getCustomerActiveStats(){
-        const res = await axios.get('https://slug-server.onrender.com/api/app/get_all_customers?limit="1000"');
-        console.log(res.data.data)
-        return res.data.data;
+        const res = await axios.get('https://slug-server.onrender.com/api/app/get_all_customers?limit=1000');
+        const customers = await res.data.data.filter((customer:any) => customer.blocked === false);
+        return {
+            active : customers.length,
+            inactive : res.data.data.length - customers.length
+        };
     }
 
     static async updateBlockStatus(customerId : string) {

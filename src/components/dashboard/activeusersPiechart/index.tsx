@@ -6,12 +6,11 @@ import { useGetCustomersActiveStats } from "../../customers/services";
 const ActiveUsersPieCharts = () => {
   const { t } = useTranslation("dashboard");
 
-  const { data: customerActiveStats, isLoading } = useGetCustomersActiveStats();
-  console.log(customerActiveStats, isLoading);
+  const { data: customerActiveStats } = useGetCustomersActiveStats();
 
   const seriesData = [
-    { id: 0, value: 10, label: t("active") },
-    { id: 1, value: 15, label: t("inactive") },
+    { id: 0, value: customerActiveStats?.active, label: t("active") },
+    { id: 1, value: customerActiveStats?.inactive, label: t("inactive") },
   ];
 
   return (
