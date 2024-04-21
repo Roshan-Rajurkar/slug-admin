@@ -15,6 +15,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useDeleteProduct } from "../../../components/products/service";
 import { Loop } from "@mui/icons-material";
+import { toast } from "react-toastify";
 
 type ProductCardProps = {
   product: Product;
@@ -23,7 +24,7 @@ type ProductCardProps = {
 };
 
 const ProductCard = ({ product, onEdit, onDelete }: ProductCardProps) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(["products", "translation"]);
   const navigate = useNavigate();
 
   const { mutate: deleteProduct, isLoading } = useDeleteProduct();
@@ -72,7 +73,7 @@ const ProductCard = ({ product, onEdit, onDelete }: ProductCardProps) => {
         </Typography>
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Typography variant="body1" sx={{ fontWeight: "bolder" }}>
-            ${product.price}
+            ₹{product.price}
           </Typography>
         </Box>
 
@@ -94,7 +95,16 @@ const ProductCard = ({ product, onEdit, onDelete }: ProductCardProps) => {
           <Button
             color="error"
             startIcon={isLoading ? <Loop /> : <DeleteIcon />}
-            onClick={() => deleteProduct(product._id)}
+            onClick={() =>
+              deleteProduct(product._id, {
+                onSuccess: () => {
+                  toast.success(t("product-deleted-successfully"));
+                },
+                onError: () => {
+                  toast.error(t("something-went-wrong", { ns: "translation" }));
+                },
+              })
+            }
           >
             {t("delete")}
           </Button>

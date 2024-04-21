@@ -1,10 +1,13 @@
-import React from "react";
 import { PieChart } from "@mui/x-charts/PieChart";
 import { Box, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import { useGetCustomersActiveStats } from "../../customers/services";
 
 const ActiveUsersPieCharts = () => {
   const { t } = useTranslation("dashboard");
+
+  const { data: customerActiveStats, isLoading } = useGetCustomersActiveStats();
+  console.log(customerActiveStats, isLoading);
 
   const seriesData = [
     { id: 0, value: 10, label: t("active") },

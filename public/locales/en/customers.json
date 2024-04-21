@@ -10,5 +10,6 @@
   "20": "20",
   "50": "50",
   "all": "All",
-  "no-match-customers" : "No match customers"
+  "no-match-customers" : "No match customers",
+  "updated-block-status" : "Updated block status"
 }

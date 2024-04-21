@@ -21,5 +21,6 @@
     "required": "Required",
     "no-products": "No products",
     "product-added-successfully": "Product added successfully",
-    "product-edited-successfully": "Product updated successfully"
+    "product-edited-successfully": "Product updated successfully",
+    "product-deleted-successfully": "Product deleted successfully"
 }

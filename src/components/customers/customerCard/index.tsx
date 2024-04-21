@@ -2,13 +2,17 @@ import { Block } from "@mui/icons-material";
 import { Box, Button, Tooltip, Typography } from "@mui/material";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import { useTranslation } from "react-i18next";
+import { useUpdateBlockCustomer } from "../services";
+import { toast } from "react-toastify";
 
 interface CustomerCardProps {
   customer: any;
 }
 
 const CustomerCard = ({ customer }: CustomerCardProps) => {
-  const { t } = useTranslation("customers");
+  const { t } = useTranslation(["customers", "translation"]);
+
+  const { mutate: updateCustomerBlock } = useUpdateBlockCustomer();
 
   return (
     <Box
@@ -86,7 +90,7 @@ const CustomerCard = ({ customer }: CustomerCardProps) => {
               gap: 1,
             }}
           >
-            <Tooltip title={t("view-details")}>
+            {/* <Tooltip title={t("view-details")}>
               <Button
                 variant="outlined"
                 // size="small"
@@ -105,7 +109,7 @@ const CustomerCard = ({ customer }: CustomerCardProps) => {
               >
                 {t("view")}
               </Button>
-            </Tooltip>
+            </Tooltip> */}
 
             {customer.blocked ? (
               <Tooltip title={t("unblock")}>
@@ -122,6 +126,16 @@ const CustomerCard = ({ customer }: CustomerCardProps) => {
                     "&:hover": {
                       border: "1px solid #17B978",
                     },
+                  }}
+                  onClick={() => {
+                    updateCustomerBlock(customer._id, {
+                      onSuccess: () => {
+                        toast.success(t("updated-block-status"));
+                      },
+                      onError: () => {
+                        toast.error(t("something-went-wrong"));
+                      },
+                    });
                   }}
                 >
                   <RemoveCircleOutlineIcon />
@@ -142,6 +156,16 @@ const CustomerCard = ({ customer }: CustomerCardProps) => {
                     "&:hover": {
                       border: "1px solid #A34343",
                     },
+                  }}
+                  onClick={() => {
+                    updateCustomerBlock(customer._id, {
+                      onSuccess: () => {
+                        toast.success(t("updated-block-status"));
+                      },
+                      onError: () => {
+                        toast.error(t("something-went-wrong"));
+                      },
+                    });
                   }}
                 >
                   <Block />
