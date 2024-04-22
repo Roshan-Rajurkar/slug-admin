@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import ProductCard from "../../../common/components/productCard";
 import { Box, Typography, Button } from "@mui/material";
 import { useTranslation } from "react-i18next";
@@ -6,12 +6,12 @@ import { ImportExportOutlined } from "@mui/icons-material";
 import { useGetAllProducts } from "../service";
 import { Product } from "../modals";
 import FullScreenLoader from "../../../common/components/fullscreenloader";
-import { Link } from "react-router-dom";
 
 const ProductList = () => {
   const { t } = useTranslation("products");
 
   const { data: products, isLoading } = useGetAllProducts();
+  console.log(products);
 
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;

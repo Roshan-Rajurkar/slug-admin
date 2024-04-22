@@ -1,4 +1,4 @@
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useMemo, useState } from "react";
 import {
   Navigate,
   Outlet,
@@ -16,11 +16,15 @@ import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRou
 import { useTranslation } from "react-i18next";
 import ProductList from "./productslist";
 import AddProduct from "./add-edit-product";
+import { useExportProductsToCsv } from "./service";
+import csvDownload from "json-to-csv-export";
 
 const Layout = () => {
   const { t } = useTranslation("products");
   const navigate = useNavigate();
   const location = useLocation();
+
+  const { data: jsonProductsData, isLoading } = useExportProductsToCsv();
 
   const [navigationItems, setNavigationItems] = useState<NavigationType[]>([
     {
@@ -85,6 +89,10 @@ const Layout = () => {
                   ? "hidden"
                   : "",
             }}
+            disabled={isLoading}
+            onClick={() =>
+              jsonProductsData && !isLoading && csvDownload(jsonProductsData)
+            }
           >
             {t("export")}
           </Button>

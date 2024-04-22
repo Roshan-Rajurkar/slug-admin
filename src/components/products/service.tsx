@@ -2,12 +2,11 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { ProductForm } from "./modals";
 import axios from "axios";
 
-class ProductService {
+export class ProductService {
   public static async getAllProducts() {
     const res = await axios.get(
       "https://slug-server.onrender.com/api/app/get_all_products",
     );
-    console.log(res.data.data);
     return await res.data.data;
   }
 
@@ -32,7 +31,6 @@ class ProductService {
       `https://slug-server.onrender.com/api/app/edit_product/${productId}`,
       product,
     );
-    console.log(res);
     return res;
   }
 
@@ -41,6 +39,22 @@ class ProductService {
       `https://slug-server.onrender.com/api/app/delete_product/${productId}`,
     );
     return res;
+  }
+
+  public static async exportProductData(): Promise<{
+    data: any;
+    filename: string;
+    delimiter: string;
+  }> {
+    const productsData = await ProductService.getAllProducts();
+    console.log(productsData);
+    const dataToConvert = {
+      data: productsData,
+      filename: "availabel_products_report",
+      delimiter: ",",
+    };
+
+    return dataToConvert;
   }
 }
 
@@ -101,3 +115,9 @@ export const useDeleteProduct = () => {
     },
   );
 };
+
+export const useExportProductsToCsv = () =>
+  useQuery(
+    PRODUCT_QUERY_KEYS.GET_ALL_PRODUCTS,
+    ProductService.exportProductData,
+  );
