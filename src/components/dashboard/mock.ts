@@ -72,6 +72,33 @@ export const salesAndGraphsMockData = [
       amount: 150,
       email: "john@example.com",
       order_status: "Pending",
+      date: "2024-02-15"
+    },
+    {
+      id : 1,   
+      order_id: 1,
+      name: "John Doe",
+      amount: 150,
+      email: "john@example.com",
+      order_status: "Pending",
+      date: "2024-01-15"
+    },
+    {
+      id : 1,   
+      order_id: 1,
+      name: "John Doe",
+      amount: 150,
+      email: "john@example.com",
+      order_status: "Pending",
+      date: "2024-03-15"
+    },
+    {
+      id : 1,   
+      order_id: 1,
+      name: "John Doe",
+      amount: 150,
+      email: "john@example.com",
+      order_status: "Pending",
       date: "2024-01-15"
     },
     {
@@ -81,7 +108,7 @@ export const salesAndGraphsMockData = [
       amount: 150,
       email: "john@example.com",
       order_status: "Pending",
-      date: "2024-01-15"
+      date: "2024-03-15"
     },
       {id : 123,   
       order_id: 1,

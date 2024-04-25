@@ -90,7 +90,7 @@ const ProductCard = ({ product, onEdit, onDelete }: ProductCardProps) => {
               navigate(`/app/products/edit_product/${product._id}`)
             }
           >
-            {t("edit")}
+            {t("edit", { ns: "translation" })}
           </Button>
           <Button
             color="error"
@@ -106,7 +106,7 @@ const ProductCard = ({ product, onEdit, onDelete }: ProductCardProps) => {
               })
             }
           >
-            {t("delete")}
+            {t("delete", { ns: "translation" })}
           </Button>
         </Box>
       </CardContent>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import ProductCard from "../../../common/components/productCard";
 import { Box, Typography, Button } from "@mui/material";
 import { useTranslation } from "react-i18next";
@@ -6,10 +6,9 @@ import { ImportExportOutlined } from "@mui/icons-material";
 import { useGetAllProducts } from "../service";
 import { Product } from "../modals";
 import FullScreenLoader from "../../../common/components/fullscreenloader";
-import { Link } from "react-router-dom";
 
 const ProductList = () => {
-  const { t } = useTranslation("products");
+  const { t } = useTranslation(["products", "translation"]);
 
   const { data: products, isLoading } = useGetAllProducts();
 
@@ -67,9 +66,13 @@ const ProductList = () => {
           justifyContent: "start",
         }}
       >
-        {products?.map((product: Product) => (
-          <ProductCard product={product} key={product._id} />
-        ))}
+        {products.length > 0 ? (
+          products.map((product: Product) => (
+            <ProductCard product={product} key={product._id} />
+          ))
+        ) : (
+          <Typography>{t("no-products")}</Typography>
+        )}
       </Box>
 
       {products?.length > 10 && (
@@ -85,7 +88,7 @@ const ProductList = () => {
             onClick={handlePrevPage}
             disabled={page === 1}
           >
-            Prev
+            {t("prev", { ns: "translation" })}
           </Button>
           <Button
             sx={{
@@ -100,7 +103,7 @@ const ProductList = () => {
             onClick={handleNextPage}
             disabled={endIndex >= products?.length}
           >
-            Next
+            {t("next", { ns: "translation" })}
           </Button>
         </Box>
       )}

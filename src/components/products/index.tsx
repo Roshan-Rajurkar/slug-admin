@@ -16,11 +16,21 @@ import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRou
 import { useTranslation } from "react-i18next";
 import ProductList from "./productslist";
 import AddProduct from "./add-edit-product";
+import { useGetAllProducts } from "./service";
+import csvDownload from "json-to-csv-export";
 
 const Layout = () => {
   const { t } = useTranslation("products");
   const navigate = useNavigate();
   const location = useLocation();
+
+  const { data: jsonProductsData, isLoading } = useGetAllProducts();
+
+  const dataToConvert = {
+    data: jsonProductsData,
+    filename: "products-report",
+    delimiter: ",",
+  };
 
   const [navigationItems, setNavigationItems] = useState<NavigationType[]>([
     {
@@ -84,6 +94,10 @@ const Layout = () => {
                 location.pathname.split("/")[3] === "add_product"
                   ? "hidden"
                   : "",
+            }}
+            disabled={isLoading}
+            onClick={() => {
+              if (jsonProductsData) csvDownload(dataToConvert);
             }}
           >
             {t("export")}

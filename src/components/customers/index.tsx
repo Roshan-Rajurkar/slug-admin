@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import CustomerHeader from "./customerHeader";
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import CustomerCard from "./customerCard";
 // import { mockCustomers } from "./mock";
 import { useGetCustomers } from "./services";

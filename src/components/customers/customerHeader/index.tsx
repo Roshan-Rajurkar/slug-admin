@@ -8,7 +8,6 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
-import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
 interface CustomerHeaderProps {

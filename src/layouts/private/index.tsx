@@ -5,12 +5,14 @@ import SideNavigation from "../../common/components/sidebar";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import BreakfastDiningIcon from "@mui/icons-material/BreakfastDining";
 import GroupIcon from "@mui/icons-material/Group";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { useTranslation } from "react-i18next";
 import { Navigate, Outlet, RouteObject, useRoutes } from "react-router-dom";
 import FullScreenLoader from "../../common/components/fullscreenloader";
 import AppNavigation from "../../common/components/appnavbar";
 import { Typography } from "@mui/material";
+import Orders from "../../components/orders";
 
 const LazyDashboard = React.lazy(() => import("../../components/dashboard"));
 const LazyProducts = React.lazy(() => import("../../components/products"));
@@ -32,6 +34,12 @@ const Layout = () => {
       href: "products",
       active: false,
       icon: <BreakfastDiningIcon />,
+    },
+    {
+      name: t("sidenav.orders"),
+      href: "orders",
+      active: false,
+      icon: <ShoppingCartIcon />,
     },
     {
       name: t("sidenav.customers"),
@@ -118,6 +126,10 @@ const AppLayout = () => {
       {
         path: "products/*",
         element: <LazyProducts />,
+      },
+      {
+        path: "orders/*",
+        element: <Orders />,
       },
       {
         path: "customers",

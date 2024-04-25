@@ -1,0 +1,10 @@
+{
+    "product" : "product",
+    "order-id" : "Order ID",
+    "name" : "Name",
+    "amount" : "Amount",
+    "email" : "Customer Email",
+    "status" : "Status",
+    "ordered-on" : "Ordered On",
+    "action" : "Action"
+}

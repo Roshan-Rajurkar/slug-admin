@@ -1,14 +1,17 @@
 {
-    "app-name" : "SLUG",
-    "sidenav": {
-        "dashboard": "Dashboard",
-        "products": "Products",
-        "customers": "Customers",
-        "settings": "Settings"
-      },
-    "required" : "Required",
-    "something-went-wrong" : "Something went wrong",
-    "search" : "Search",
-    "edit" : "Edit",
-    "delete" : "Delete"
+  "app-name": "SLUG",
+  "sidenav": {
+    "dashboard": "Dashboard",
+    "products": "Products",
+    "customers": "Customers",
+    "settings": "Settings",
+    "orders": "Orders"
+  },
+  "required": "Required",
+  "something-went-wrong": "Something went wrong",
+  "search": "Search",
+  "edit": "Edit",
+  "delete": "Delete",
+  "next" : "Next",
+  "prev" : "Prev"
 }

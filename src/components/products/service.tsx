@@ -2,12 +2,16 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { ProductForm } from "./modals";
 import axios from "axios";
 
-class ProductService {
+export class ProductService {
   public static async getAllProducts() {
     const res = await axios.get(
       "https://slug-server.onrender.com/api/app/get_all_products",
+      {
+        params: {
+          orderBy: "desc",
+        },
+      },
     );
-    console.log(res.data.data);
     return await res.data.data;
   }
 
@@ -32,7 +36,6 @@ class ProductService {
       `https://slug-server.onrender.com/api/app/edit_product/${productId}`,
       product,
     );
-    console.log(res);
     return res;
   }
 

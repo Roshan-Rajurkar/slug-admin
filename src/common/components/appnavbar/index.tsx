@@ -11,12 +11,10 @@ import { useTranslation } from "react-i18next";
 import { Button, Avatar, Typography, Popper } from "@mui/material";
 import USER_PROFILE from "../../../assets/slug-admin.png";
 import { useGetProfile, useLogout } from "../../../components/auth/service";
-import { useCallback, useEffect, useState } from "react";
-import FullScreenLoader from "../fullscreenloader";
-import { Output, PersonPin } from "@mui/icons-material";
-import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { useCallback, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { Output } from "@mui/icons-material";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",

@@ -2,7 +2,6 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { MockOrdersData } from "../mock";
 import { Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { DisabledByDefault } from "@mui/icons-material";
 
 const columns: GridColDef[] = [
   { field: "order_id", headerName: "Order ID", width: 100 },
