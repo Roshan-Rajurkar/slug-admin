@@ -3,9 +3,12 @@ import { Box, Grid, Typography } from "@mui/material";
 import { ShoppingCart, ShoppingBasket } from "@mui/icons-material";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import { useTranslation } from "react-i18next";
+import { useGetDashBoardStats } from "../services";
+import { formatPrice } from "../../../constants/currencyformatter";
 
 const TotalSalesOrdersPurchases = () => {
   const { t } = useTranslation("dashboard");
+  const { data: stats, isLoading: isStatsLoading } = useGetDashBoardStats();
   return (
     <>
       <Grid item xs={4}>
@@ -36,7 +39,7 @@ const TotalSalesOrdersPurchases = () => {
               {t("total-sales")}
             </Typography>
             <Typography sx={{ fontWeight: "bolder", fontSize: 24 }}>
-              ₹22,303
+              {formatPrice(stats?.totalSales || 0)}
             </Typography>
           </Box>
         </Box>
@@ -69,7 +72,7 @@ const TotalSalesOrdersPurchases = () => {
               {t("total-orders")}
             </Typography>
             <Typography sx={{ fontWeight: "bolder", fontSize: 24 }}>
-              2,303
+              {stats?.totalOrders || 0}
             </Typography>
           </Box>
         </Box>
@@ -102,7 +105,7 @@ const TotalSalesOrdersPurchases = () => {
               {t("total-purchases")}
             </Typography>
             <Typography sx={{ fontWeight: "bolder", fontSize: 24 }}>
-              299
+              {stats?.totalPurchases || 0}
             </Typography>
           </Box>
         </Box>

@@ -1,75 +1,64 @@
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { MockOrdersData } from "../../dashboard/mock";
 import { useTranslation } from "react-i18next";
 import EditIcon from "@mui/icons-material/Edit";
 import { useNavigate } from "react-router-dom";
-// import { Box } from "@mui/material";
+import { Order } from "../modal";
 
-export default function Orders() {
+type OrderProps = {
+  orders: Order[];
+};
+export default function Orders({ orders }: OrderProps) {
   const { t } = useTranslation(["orders", "translation"]);
-
   const navigate = useNavigate();
 
   const columns: GridColDef[] = [
-    // {
-    //   field: "_",
-    //   headerName: t("product"),
-    //   width: 100,
-    //   renderCell: (params) => (
-    //     <Box
-    //       sx={{
-    //         width: "50px",
-    //         height: "35px",
-    //         padding: 1,
-    //       }}
-    //     >
-    //       <img
-    //         width="100%"
-    //         height="100%"
-    //         src="https://assets.turbologo.com/blog/en/2021/09/10093610/photo-camera-958x575.png"
-    //         alt="product"
-    //       />
-    //     </Box>
-    //   ),
-    // },
-    { field: "order_id", headerName: t("order-id"), width: 150 },
-    { field: "name", headerName: t("name"), width: 150 },
+    { field: "_id", headerName: t("order-id"), width: 150 },
     {
-      field: "amount",
-      headerName: t("amount"),
+      field: "customer.firstName",
+      headerName: t("name"),
+      width: 200,
+      valueGetter: (value, row) =>
+        `${row.customer.firstName || "-"} ${row.customer.lastName || "-"} `,
+    },
+    {
+      field: "price",
+      headerName: t("price"),
       width: 100,
       sortable: true,
     },
     {
-      field: "email",
+      field: "customer.email",
       headerName: t("email"),
       width: 250,
+      valueGetter: (value, row) => `${row.customer.email || "-"} `,
     },
     {
-      field: "order_status",
+      field: "status",
       headerName: t("status"),
       width: 100,
     },
     {
-      field: "date",
+      field: "orderDate",
       headerName: t("ordered-on"),
-      width: 200,
+      width: 250,
     },
     {
-      field: "id",
+      field: "action",
       headerName: t("action"),
-      width: 100,
+      width: 50,
       renderCell: (params) => (
         <EditIcon
           style={{ cursor: "pointer" }}
           onClick={() => {
-            const id = params.id;
-            navigate(`${id}`);
+            const id = params.row._id;
+            navigate(`/app/orders/order/${id}`);
           }}
         />
       ),
     },
   ];
+
+  const getRowId = (row: any) => row._id;
 
   return (
     <div style={{ marginBottom: "50px" }}>
@@ -78,12 +67,11 @@ export default function Orders() {
           backgroundColor: "white",
           outline: "none",
         }}
-        rows={MockOrdersData}
+        rows={orders}
         columns={columns}
+        getRowId={getRowId}
         disableRowSelectionOnClick
-        initialState={{
-          pagination: { paginationModel: { pageSize: 6 } },
-        }}
+        pagination
         pageSizeOptions={[5, 10, 20]}
       />
     </div>

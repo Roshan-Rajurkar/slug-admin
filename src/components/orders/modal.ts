@@ -1,10 +1,8 @@
 import { Product } from "../products/modals";
 
-export type OrderDetails = {
-    id: string;
-    orderName: string;
-    totalPrice: number;
-    currency: string;
+export type Order = {
+     id: string;
+    price: string;
     customer: {
       firstName: string;
       lastName: string;
@@ -19,8 +17,25 @@ export type OrderDetails = {
       country: string;
     };
     items: Product[];
-    status: 'Pending' | 'Processing' | 'Shipped' | 'Delivered' | 'Cancelled';
-    orderDate: Date;
+    status: OrderStatus;
+    paymentInfo ?: Payment
+    orderDate: string;
     estimatedDeliveryDate?: Date;
   };
-  
+
+
+export enum OrderStatus  {
+  Pending = 'pending',
+  Processing = "processing",
+  Shipped = "shipped",
+  Delivered = "delivered",
+  Cancelled = "cancelled"
+}
+
+export type Payment = {
+  method : string,
+  paymentId : string,
+  paymentStatus : string,
+  phoneNumber? : string,
+  // update based on payment details
+}

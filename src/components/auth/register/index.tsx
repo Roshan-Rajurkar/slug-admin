@@ -40,7 +40,7 @@ function AuthRegister() {
     password: yup
       .string()
       .required(t("required", { ns: "translation" }))
-      .min(6, t("min-length", { min: 6 })),
+      .min(6, t("min-length", { ns: "translation" })),
   });
 
   const { mutate: signUp, isLoading } = useSignUp();

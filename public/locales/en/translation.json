@@ -13,5 +13,6 @@
   "edit": "Edit",
   "delete": "Delete",
   "next" : "Next",
-  "prev" : "Prev"
+  "prev" : "Prev",
+  "min-length" : "Minimum length should be 6"
 }

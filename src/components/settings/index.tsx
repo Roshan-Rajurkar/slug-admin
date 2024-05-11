@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 import FullScreenLoader from "../../common/components/fullscreenloader";
 import { Box, List, ListItemButton, ListItemText } from "@mui/material";
+import ViewProfile from "./view-profile";
 
 const Layout = () => {
   const location = useLocation();
@@ -58,7 +59,7 @@ const Settings = () => {
       },
       {
         path: "profile",
-        element: <>Profile details</>,
+        element: <ViewProfile />,
       },
       {
         path: "*",

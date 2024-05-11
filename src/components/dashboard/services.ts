@@ -1,14 +1,34 @@
 import { useQuery } from "react-query"
+import { OrderServices } from "../orders/services"
+import { Order } from "../orders/modal";
 
 class DashBoardServices {
-    public static getDashBoardStats()  {
+    public static async getDashBoardStats()  {
         // we are getting all sales, orders and purchases
-        return {}
+        const orders = await OrderServices.getOrders();
+        let totalPurchases = 0;
+        let totalSales = 0;
+        for (const order of orders) {
+           
+            if(order.status === "delivered"){ totalSales += parseInt(order.price); totalPurchases += 1;}
+        }
+
+        // Return dashboard stats
+        return {
+            totalOrders: orders.length,
+            totalPurchases,
+            totalSales
+        };
     }
 
-    public static getDashboardOrdersAndSales(){
-        // returning two arrays each months sales and orders
-        return {}
+    public static async getDashboardOrdersAndSales(){
+
+        const orders = await OrderServices.getOrders();
+        const sales = orders.map((order : Order) => order.status === "delivered")
+        
+        return {
+            
+        }
     }
 
     public static getRecentOrders() {
@@ -17,14 +37,14 @@ class DashBoardServices {
     }
 }
 
-const DashboardKeys = {
+const DASHBOARD_QUERY_KEYS = {
     GET_DASHBOARD_STATS : 'GET_DASHBOARD_STATS',
     GET_DASHBOARD_ORDERS_AND_SALES : 'GET_DASHBOARD_ORDERS_AND_SALES',
     GET_RECENT_ORDERS : 'GET_RECENT_ORDERS'
 }
 
-export const useGetDashBoardStats = () => useQuery(DashboardKeys.GET_DASHBOARD_STATS, DashBoardServices.getDashBoardStats())
+export const useGetDashBoardStats = () => useQuery(DASHBOARD_QUERY_KEYS.GET_DASHBOARD_STATS, DashBoardServices.getDashBoardStats)
 
-export const useGetDashboardOrdersAndSales = () => useQuery(DashboardKeys.GET_DASHBOARD_ORDERS_AND_SALES, DashBoardServices.getDashboardOrdersAndSales())
+export const useGetDashboardOrdersAndSales = () => useQuery(DASHBOARD_QUERY_KEYS.GET_DASHBOARD_ORDERS_AND_SALES, DashBoardServices.getDashboardOrdersAndSales)
 
-export const useGetRecentOrders = () => useQuery(DashboardKeys.GET_RECENT_ORDERS, DashBoardServices.getRecentOrders())
+export const useGetRecentOrders = () => useQuery(DASHBOARD_QUERY_KEYS.GET_RECENT_ORDERS, DashBoardServices.getRecentOrders)
