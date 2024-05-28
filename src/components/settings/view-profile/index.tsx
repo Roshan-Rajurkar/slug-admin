@@ -37,26 +37,17 @@ const ViewProfile = () => {
   const { t } = useTranslation(["settings", "translation"]);
 
   const [showPassword, setShowPassword] = useState(false);
-  const [password, setPassword] = useState("");
-  const id = "wewe"; // static user id
+  const [newPassword, setPassword] = useState("");
+  const id = "6622b366d01fc8f67c7f02c2";
 
   const { mutate: updatePassword, isLoading } = useUpdatePassword();
 
   useEffect(() => {
-    // Fetch user information from API and populate fields
-    // Example API call:
-    // fetchUserData().then(data => {
-    //   setEmail(data.email);
-    //   setUsername(data.username);
-    // });
-    // Mock data:
-    //  also get the profile
-    // for userId
-    setPassword("userpassword123");
+    setPassword("admin12345");
   }, []);
 
   const validationSchema = yup.object().shape({
-    password: yup
+    newPassword: yup
       .string()
       .required(t("required", { ns: "translation" }))
       .min(6, t("min-length", { ns: "translation" })),
@@ -79,17 +70,16 @@ const ViewProfile = () => {
   };
 
   const onSubmit = useCallback(
-    (data: { password: string }) => {
-      console.log("updating password");
+    (data: { newPassword: string }) => {
       if (data) {
         updatePassword(
-          { userId: id, password: data.password },
+          { userId: id, newPassword: data.newPassword },
           {
             onSuccess: () => {
               toast.success(t("password-updated-successfully"));
             },
             onError: () => {
-              toast.error(t("something went wrong"));
+              toast.error(t("something went wrong", { ns: "translation" }));
             },
           },
         );
@@ -226,10 +216,10 @@ const ViewProfile = () => {
             margin="normal"
             placeholder="Enter new password"
             type={showPassword ? "text" : "password"}
-            {...register("password")}
-            error={!!errors.password}
-            helperText={errors.password && errors.password.message}
-            value={password}
+            {...register("newPassword")}
+            error={!!errors.newPassword}
+            helperText={errors.newPassword && errors.newPassword.message}
+            value={newPassword}
             onChange={handleChangePassword}
             InputProps={{
               endAdornment: (

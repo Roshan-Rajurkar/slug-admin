@@ -1,5 +1,4 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { ProductForm } from "./modals";
 import axios from "axios";
 
 export class ProductService {
@@ -12,45 +11,53 @@ export class ProductService {
         },
       },
     );
-    return await res.data.data;
+    return res.data.data;
   }
 
   public static async getProductById(productId: string) {
     const res = await axios.get(
       `https://slug-server.onrender.com/api/app/get_product/${productId}`,
     );
-
-    return await res.data.data;
+    return res.data.data;
   }
 
-  public static async addProduct(product: ProductForm) {
+  public static async addProduct(product: FormData) {
     const res = await axios.post(
       "https://slug-server.onrender.com/api/app/add_product",
       product,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      },
     );
-    return res;
+    return res.data.data;
   }
 
-  public static async updateProduct(productId: string, product: ProductForm) {
+  public static async updateProduct(productId: string, product: FormData) {
     const res = await axios.put(
       `https://slug-server.onrender.com/api/app/edit_product/${productId}`,
       product,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      },
     );
-    return res;
+    return res.data.data;
   }
 
   public static async deleteProduct(productId: string) {
     const res = await axios.delete(
       `https://slug-server.onrender.com/api/app/delete_product/${productId}`,
     );
-    return res;
+    return res.data;
   }
 }
 
-// query keys for caching
 const PRODUCT_QUERY_KEYS = {
   GET_ALL_PRODUCTS: "GET_ALL_PRODUCTS",
-  GET_ALL_PRODUCTS_BY_ID: "GET_ALL_PRODUCT_BY_ID",
+  GET_ALL_PRODUCTS_BY_ID: "GET_ALL_PRODUCTS_BY_ID",
 };
 
 export const useGetAllProducts = () =>
@@ -69,7 +76,7 @@ export const useAddProduct = () => {
   const queryClient = useQueryClient();
 
   return useMutation(
-    (product: ProductForm) => ProductService.addProduct(product),
+    (product: FormData) => ProductService.addProduct(product),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(PRODUCT_QUERY_KEYS.GET_ALL_PRODUCTS);
@@ -82,7 +89,7 @@ export const useUpdateProduct = () => {
   const queryClient = useQueryClient();
 
   return useMutation(
-    (payload: { productId: string; product: ProductForm }) =>
+    (payload: { productId: string; product: FormData }) =>
       ProductService.updateProduct(payload.productId, payload.product),
     {
       onSuccess: () => {

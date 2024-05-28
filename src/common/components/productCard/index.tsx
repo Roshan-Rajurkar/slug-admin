@@ -42,7 +42,7 @@ const ProductCard = ({ product, onEdit, onDelete }: ProductCardProps) => {
         <CardMedia
           component="img"
           height="130"
-          image={product.imageUrl}
+          image={product.file}
           alt="Product Image"
           sx={{
             objectFit: "cover",

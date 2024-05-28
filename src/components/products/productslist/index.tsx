@@ -44,7 +44,7 @@ const ProductList = () => {
         sx={{ display: "flex", justifyContent: "space-between", marginTop: 1 }}
       >
         <Typography variant="h6" align="center" mb={1.5}>
-          {products?.length === 0 ? t("no-products") : t("available-products")}
+          {t("available-products")}
         </Typography>
 
         <Box>

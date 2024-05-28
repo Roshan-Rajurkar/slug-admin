@@ -1,4 +1,5 @@
 {
     "min-length" : "Minimum length should be 6",
-    "view-profile" : "View profile"
+    "view-profile" : "View profile",
+    "password-updated-successfully" : "Password updated successfully"
 }

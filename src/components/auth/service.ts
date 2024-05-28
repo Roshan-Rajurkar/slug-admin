@@ -6,7 +6,7 @@ const Login_Endpoint = 'https://slug-server.onrender.com/api/auth/login'
 const Register_Endpoint = 'https://slug-server.onrender.com/api/auth/register'
 const getProfile_Endpoint = 'https://slug-server.onrender.com/api/auth/getprofile'
 const Logout_Endpoint = 'https://slug-server.onrender.com/api/auth/logout'
-const update_password_endpoint = 'https://slug-server.onrender.com/api/auth/profile/update_password'
+const update_password_endpoint = 'https://slug-server.onrender.com/api/auth/update_password'
 
 export class AuthServices {
     
@@ -30,8 +30,8 @@ export class AuthServices {
         return res;
     }
 
-    public static async updatePassword(userId : string, password : string){
-        const res = await axios.post('update password api', {userId, password});
+    public static async updatePassword(userId : string, newPassword : string){
+        const res = await axios.put(update_password_endpoint , {userId, newPassword});
         return res;
     }
 }
@@ -46,4 +46,6 @@ export const useGetProfile = () =>  useQuery(['CURRENT_USER'],AuthServices.getUs
 
 export const useLogout = () =>  useMutation(AuthServices.logout)
 
-export const useUpdatePassword = () => useMutation((payload : {userId:string, password:string}) => AuthServices.updatePassword(payload.userId, payload.password))
+export const useUpdatePassword = () => useMutation((payload : {userId:string, newPassword:string}) => AuthServices.updatePassword(payload.userId, payload.newPassword))
+
+

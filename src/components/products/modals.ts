@@ -3,7 +3,7 @@ export type Product = {
   name: string;
   description: string;
   price: number;
-  imageUrl: string;
+  file: string;
   published: boolean;
 };
 
@@ -12,5 +12,5 @@ export type ProductForm = {
   description: string;
   price: number;
   published: boolean;
-  imageUrl?: string;
+  file?: FileList;
 };

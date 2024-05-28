@@ -1,7 +1,9 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { CloudUpload, Adjust, Loop } from "@mui/icons-material";
+import VisuallyHiddenInput from "../../../common/components/visuallyHiddenInput";
 import {
   Typography,
   Box,
@@ -13,19 +15,17 @@ import {
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
-import { ProductForm } from "../modals";
 import { useAddProduct, useGetProductById, useUpdateProduct } from "../service";
 import { toast } from "react-toastify";
 import FullScreenLoader from "../../../common/components/fullscreenloader";
-import { Adjust, Loop } from "@mui/icons-material";
+import { ProductForm } from "../modals";
 
 const AddEditProduct = () => {
   const { t } = useTranslation(["products", "translation"]);
   const { id } = useParams<{ id?: string }>();
+  const navigate = useNavigate();
 
   const isEditMode = useMemo(() => !!id, [id]);
-
-  const navigate = useNavigate();
 
   const { mutate: addProduct, isLoading: isAdding } = useAddProduct();
   const { mutate: updateProduct, isLoading: isUpdating } = useUpdateProduct();
@@ -33,18 +33,13 @@ const AddEditProduct = () => {
     id || "",
   );
 
+  const [fileName, setFileName] = useState<string | null>(null);
+
   const validationSchema = yup.object().shape({
     name: yup.string().required(t("required", { ns: "translation" })),
     description: yup.string().required(t("required", { ns: "translation" })),
     price: yup.number().required(t("required", { ns: "translation" })),
   });
-
-  const productEditMock = {
-    name: "Product edit name",
-    description: "Product description edit",
-    price: 200,
-    published: true,
-  };
 
   const {
     register,
@@ -54,51 +49,75 @@ const AddEditProduct = () => {
     reset,
   } = useForm<ProductForm>({
     resolver: yupResolver(validationSchema) as any,
-    defaultValues: !isEditMode
-      ? { name: "", description: "", price: 0, published: false }
-      : productEditMock,
+    defaultValues: {
+      name: "",
+      description: "",
+      price: 0,
+      published: false,
+    },
   });
 
+  useEffect(() => {
+    if (isEditMode && product) {
+      reset({
+        name: product.name || "",
+        description: product.description || "",
+        price: product.price || 0,
+        published: product.published || false,
+      });
+    } else {
+      reset({
+        name: "",
+        description: "",
+        price: 0,
+        published: false,
+      });
+    }
+  }, [reset, isEditMode, product]);
   const handleProductSubmit = (data: ProductForm) => {
-    if (data) {
-      if (isEditMode) {
-        // edit product
-        updateProduct(
-          {
-            productId: id || "",
-            product: data,
-          },
-          {
-            onSuccess: () => {
-              toast.success(t("product-edited-successfully"));
-              navigate("../");
-            },
-            onError: () => {
-              toast.error(t("something-went-wrong", { ns: "translation" }));
-            },
-          },
-        );
-      } else {
-        addProduct(data, {
+    const formData = new FormData();
+
+    formData.append("name", data.name);
+    formData.append("description", data.description);
+    formData.append("price", data.price.toString());
+
+    if (data.file && data.file[0]) {
+      formData.append("file", data.file[0]);
+    }
+
+    if (isEditMode) {
+      formData.append("published", data.published ? "true" : "false");
+      updateProduct(
+        { productId: id || "", product: formData },
+        {
           onSuccess: () => {
-            toast.success(t("product-added-successfully"));
+            toast.success(t("product-edited-successfully"));
             navigate("../");
           },
           onError: () => {
             toast.error(t("something-went-wrong", { ns: "translation" }));
           },
-        });
-      }
+        },
+      );
+    } else {
+      formData.append("published", "false"); // Assuming default is not published
+      addProduct(formData, {
+        onSuccess: () => {
+          toast.success(t("product-added-successfully"));
+          navigate("../");
+        },
+        onError: () => {
+          toast.error(t("something-went-wrong", { ns: "translation" }));
+        },
+      });
     }
   };
 
-  useEffect(() => {
-    if (isEditMode && product) {
-      reset(product);
-    } else {
-      reset({ name: "", description: "", price: 0, published: false });
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      setFileName(event.target.files[0].name);
     }
-  }, [reset, isEditMode, product]);
+  };
 
   if (isEditLoading) return <FullScreenLoader />;
 
@@ -132,7 +151,6 @@ const AddEditProduct = () => {
               placeholder={t("enter-name")}
               {...register("name")}
             />
-
             {errors.name && (
               <Typography color="error">{errors.name.message}</Typography>
             )}
@@ -156,7 +174,23 @@ const AddEditProduct = () => {
             )}
           </FormControl>
 
-          <FormControl fullWidth sx={{ marginBottom: 2 }}>
+          <Button
+            component="label"
+            role={undefined}
+            variant="outlined"
+            tabIndex={-1}
+            startIcon={<CloudUpload />}
+          >
+            {fileName || t("upload-image")}
+            <VisuallyHiddenInput
+              type="file"
+              {...register("file")}
+              onChange={handleFileChange}
+              accept="image/png, image/gif, image/jpeg"
+            />
+          </Button>
+
+          <FormControl fullWidth sx={{ margin: "20 0 " }}>
             <Typography sx={{ color: "text.secondary" }}>
               {t("price")}
             </Typography>
@@ -176,7 +210,6 @@ const AddEditProduct = () => {
             sx={{ marginBottom: 2 }}
             component="fieldset"
             variant="standard"
-            {...register("published")}
           >
             <FormControlLabel
               control={
@@ -184,12 +217,7 @@ const AddEditProduct = () => {
                   name="published"
                   control={control}
                   render={({ field }) => (
-                    <Switch
-                      {...field}
-                      defaultChecked={isEditMode && productEditMock?.published}
-                      color="error"
-                      name="check product"
-                    />
+                    <Switch {...field} color="error" name="checkProduct" />
                   )}
                 />
               }

@@ -24,7 +24,7 @@ class DashBoardServices {
     public static async getDashboardOrdersAndSales(){
 
         const orders = await OrderServices.getOrders();
-        const sales = orders.map((order : Order) => order.status === "delivered")
+        // const sales = orders.map((order : Order) => order.status === "delivered")
         
         return {
             
